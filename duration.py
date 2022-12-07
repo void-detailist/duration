@@ -1,10 +1,4 @@
 import pickle
-from datetime import date
-
-
-class custom_date(date):
-    def __new__(cls, year, month, day):
-        return date.__new__(cls, year, month, day)
 
 
 class Duration(object):
