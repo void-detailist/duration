@@ -13,17 +13,13 @@ setup(
     author_email="xenups@outlook.com",
     description="Operations with ISO 8601 durations",
     url="https://github.com/bolsote/isoduration",
-    package_dir={"": "app"},
-    packages=find_packages(where="app"),
+    package_dir={"": "src"},
+    packages=find_packages(where="src"),
     python_requires=">=3.7",
     zip_safe=False,
     long_description="pars and generate iso 8601",
     long_description_content_type="text/markdown",
-    project_urls={
-        "Repository": "https://github.com/bolsote/isoduration",
-        "Bug Reports": "https://github.com/bolsote/isoduration/issues",
-        "Changelog": "https://github.com/bolsote/isoduration/blob/master/CHANGELOG",
-    },
+
     keywords=[
         "datetime",
         "date",
