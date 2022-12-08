@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from calendar import CALENDAR
 
 
@@ -14,7 +16,7 @@ class Duration(object):
         self.microseconds: int = dikt.get("tu") or 0
 
     def get_seconds(self):
-        return (
+        days_seconds = (
             self.years * CALENDAR.SECONDS_IN_YEAR
             + self.months * CALENDAR.SECONDS_IN_MONTH
             + self.days * CALENDAR.SECONDS_IN_DAY
@@ -22,14 +24,15 @@ class Duration(object):
             + self.minutes * CALENDAR.SECONDS_IN_MINUTE
             + self.seconds
             + self.miliseconds * CALENDAR.SECONDS_IN_MILI
-            + self.nanoseconds * CALENDAR.SECONDS_IN_NANO
             + self.microseconds * CALENDAR.SECONDS_IN_MICRO
+            + self.nanoseconds * CALENDAR.SECONDS_IN_NANO
         )
+        return Decimal(days_seconds)
 
     def __str__(self):
         return (
             f"{self.years}year {self.months}month {self.days}day {self.hours}hour {self.minutes}minute {self.seconds}seconds"
-            f" {self.miliseconds}miliseconds {self.nanoseconds}nanoseconds {self.microseconds}microseconds"
+            f" {self.miliseconds}miliseconds {self.microseconds}microseconds  {self.nanoseconds}nanoseconds"
         )
 
     def __eq__(self, other):
@@ -39,3 +42,15 @@ class Duration(object):
     def __gt__(self, other: "Duration"):
         if isinstance(other, Duration):
             return self.get_seconds() > other.get_seconds()
+
+    def __lt__(self, other):
+        if isinstance(other, Duration):
+            return self.get_seconds() < other.get_seconds()
+
+    def __ge__(self, other):
+        if isinstance(other, Duration):
+            return self.get_seconds() >= other.get_seconds()
+
+    def __le__(self, other):
+        if isinstance(other, Duration):
+            return self.get_seconds() <= other.get_seconds()
