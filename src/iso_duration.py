@@ -5,32 +5,30 @@ from util import convert_to_dict, rename
 
 
 class ISODuration(object):
-    def __init__(self):
-        self.date_map_dict = {"years": "Y", "months": "M", "days": "D"}
+    date_map_dict = {"years": "Y", "months": "M", "days": "D"}
 
-        self.time_map_dict = {
-            "hours": "H",
-            "minutes": "M",
-            "seconds": "S",
-            "miliseconds": "m",
-            "nanoseconds": "n",
-            "microseconds": "u",
-        }
+    time_map_dict = {
+        "hours": "H",
+        "minutes": "M",
+        "seconds": "S",
+        "miliseconds": "m",
+        "nanoseconds": "n",
+        "microseconds": "u",
+    }
 
-    def _check_valid_character(self, duration):
+    def _is_character_valid(self, duration) -> bool:
         duration_symbols = ["P", "T", "Y", "M", "D", "H", "M", "S", "m", "u", "n"]
         for ch in duration:
             if ch.isalpha() and ch not in duration_symbols:
-                raise ValueError
+                return False
         return True
 
     def _parse_time_duration(self, duration: str) -> dict:
-        if self._check_valid_character(duration):
+        if self._is_character_valid(duration):
             time_value = re.findall(r"T.*", duration)
             if time_value:
-                number = r"\d"
                 match = re.findall(
-                    f"{number}*H|{number}*M|{number}*S|{number}*m|{number}*u|{number}*n",
+                    r"\d*H|\d*M|\d*S|\d*m|\d*u|\d*n",
                     time_value[0],
                 )
                 if match:
@@ -38,11 +36,10 @@ class ISODuration(object):
             return {}
 
     def _parse_date_duration(self, duration) -> dict:
-        if self._check_valid_character(duration):
+        if self._is_character_valid(duration):
             date_value = re.match(r"^P:?(\S*)T", duration)
             if date_value:
-                number = r"\d"
-                match = re.findall(rf"{number}*Y|{number}*M|{number}*D", date_value[0])
+                match = re.findall(r"\d*Y|\d*M|\d*D", date_value[0])
                 if match:
                     return convert_to_dict(match, add_letter="p")
             return {}
@@ -73,7 +70,7 @@ class ISODuration(object):
             del du[key]
         return du
 
-    def generate(self, duration: Duration):
+    def generate(self, duration: Duration) -> str:
         duration_dict = duration.__dict__
         gen_date = self._generate_date(duration_dict)
         duration_dict = self._remove_date(duration_dict)
@@ -91,8 +88,8 @@ s6 = "PT9000000u"
 s7 = "PT9000000000n"
 s8 = "PT90m"
 
-b1 = "P3Y6M4DT12H24M12S10m14n90u"
-b2 = "P3Y6M4DT12H24M12S10m12n90u"
+f1 = "PT18n"
+f2 = "PT20n"
 duration_list = [s, s2, s3, s4, s5]
 # duration_list = [s3]
 for duration_value in duration_list:
@@ -100,6 +97,9 @@ for duration_value in duration_list:
     print(d.get_seconds())
     assert ISODuration().generate(d) == duration_value
     # print(d.__dict__)
+b1 = "P4Y6M4DT12H24M12S10m90u14n"
+b2 = "P4Y6M4DT12H24M12S10m90u14n"
+
 d = ISODuration().pars_duration(b1)
 d2 = ISODuration().pars_duration(b2)
-print(d > d2)
+print(d == d2)
