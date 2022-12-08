@@ -1,4 +1,4 @@
-from app.iso_duration import ISODuration
+from src.iso_duration import ISODuration
 
 ISODuration()
 
@@ -12,6 +12,5 @@ def test_parser():
 
     duration_list = [s, s2, s3, s4, s5]
     for duration_value in duration_list:
-        d = ISODuration().pars_duration(duration_value)
-        print(d.get_seconds())
+        d = ISODuration().parse(duration_value)
         assert ISODuration().generate(d) == duration_value
