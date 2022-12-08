@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+
+flake8 app --ignore=D,WPS,B008
+
+isort --check-only app

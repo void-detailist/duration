@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -e
+
+autoflake --recursive --remove-all-unused-imports --remove-unused-variables --in-place app tests
+
