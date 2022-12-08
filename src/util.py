@@ -28,5 +28,5 @@ def convert_to_dict(string_list: list, add_letter: str) -> dict:
     dikt = {}
     for string in string_list:
         value, symbol = split_flot_string_gen(string)
-        dikt[add_letter + symbol] = value
+        dikt[add_letter + symbol] = int(value)
     return dikt
