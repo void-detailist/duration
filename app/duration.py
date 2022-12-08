@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from calendar import CALENDAR
+from app.calendar import CALENDAR
 
 
 class Duration(object):

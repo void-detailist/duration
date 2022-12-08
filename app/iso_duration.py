@@ -1,7 +1,7 @@
 import re
 
-from duration import Duration
-from util import convert_to_dict, rename
+from app.duration import Duration
+from app.util import convert_to_dict, rename
 
 
 class ISODuration(object):
@@ -77,29 +77,3 @@ class ISODuration(object):
         gen_time = self._generate_time(duration_dict)
 
         return gen_date + gen_time
-
-
-s = "P3Y6M4DT12H24M12S10m12n80u"
-s2 = "PT1n"
-s3 = "P1DT"
-s4 = "P3Y6M4DT12H24M12S10m12n80u"
-s5 = "P3Y6M4DT12H24M12S10m12n90u"
-s6 = "PT9000000u"
-s7 = "PT9000000000n"
-s8 = "PT90m"
-
-f1 = "PT18n"
-f2 = "PT20n"
-duration_list = [s, s2, s3, s4, s5]
-# duration_list = [s3]
-for duration_value in duration_list:
-    d = ISODuration().pars_duration(duration_value)
-    print(d.get_seconds())
-    assert ISODuration().generate(d) == duration_value
-    # print(d.__dict__)
-b1 = "P4Y6M4DT12H24M12S10m90u14n"
-b2 = "P4Y6M4DT12H24M12S10m90u14n"
-
-d = ISODuration().pars_duration(b1)
-d2 = ISODuration().pars_duration(b2)
-print(d == d2)
