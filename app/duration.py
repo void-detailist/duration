@@ -31,8 +31,12 @@ class Duration(object):
 
     def __str__(self):
         return (
-            f"{self.years}year {self.months}month {self.days}day {self.hours}hour {self.minutes}minute {self.seconds}seconds"
-            f" {self.miliseconds}miliseconds {self.microseconds}microseconds  {self.nanoseconds}nanoseconds"
+            f"{self.years}year {self.months}month"
+            f" {self.days}day {self.hours}hour {self.minutes}minute "
+            f"{self.seconds}seconds"
+            f" {self.miliseconds}miliseconds "
+            f"{self.microseconds}microseconds"
+            f"{self.nanoseconds}nanoseconds"
         )
 
     def __eq__(self, other):
