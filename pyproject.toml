@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["xenups <xenups@outlook.com>"]
 readme = "README.md"
-packages = [{include = "durationparser", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
