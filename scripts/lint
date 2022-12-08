@@ -6,4 +6,4 @@ set -x
 
 flake8 src --ignore=D,WPS,B008,W503,E501
 
-isort --check-only app
+isort --check-only src
