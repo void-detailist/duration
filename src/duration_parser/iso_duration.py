@@ -4,7 +4,7 @@ import re
 from decimal import Decimal
 
 from . import calendar
-from .exceptions import IncorrectDesignator, IncorrectPattern
+from .exceptions import IncorrectDesignator, IncorrectNumber, IncorrectPattern
 from .util import convert_to_dict, rename
 
 
@@ -63,9 +63,15 @@ class ISODuration(object):
             if ch.isalpha() and ch not in duration_symbols:
                 raise IncorrectDesignator(designator=ch)
 
-    def _is_pattern_valid(self, duration):
+    def _is_pattern_valid(self, duration) -> None:
         if not re.match(r"^P:?(\S*)T", duration):
             raise IncorrectPattern()
+
+    def _is_number_valid(self, duration_dict: dict) -> None:
+        for key, value in duration_dict.items():
+            if isinstance(value, int) and value >= 0:
+                continue
+            raise IncorrectNumber()
 
     def _parse_time_duration(self, duration: str) -> dict:
         self._is_character_valid(duration)
@@ -77,7 +83,9 @@ class ISODuration(object):
                 time_value[0],
             )
             if match:
-                return convert_to_dict(match, add_letter="t")
+                duration_dict = convert_to_dict(match, add_letter="t")
+                self._is_number_valid(duration_dict)
+                return duration_dict
         return {}
 
     def _parse_date_duration(self, duration) -> dict:
@@ -87,7 +95,9 @@ class ISODuration(object):
         if date_value:
             match = re.findall(r"\d*Y|\d*M|\d*D", date_value[0])
             if match:
-                return convert_to_dict(match, add_letter="p")
+                duration_dict = convert_to_dict(match, add_letter="p")
+                self._is_number_valid(duration_dict)
+                return duration_dict
         return {}
 
     def parse(self, duration: str) -> ISODuration:
@@ -95,8 +105,8 @@ class ISODuration(object):
         duration_dict.update(self._parse_time_duration(duration))
         return self._wrap(duration_dict)
 
-    def _generate_date(self, du: dict) -> str:
-        date_duration = rename(du, self.date_map_dict)
+    def _generate_date(self, duration_dict: dict) -> str:
+        date_duration = rename(duration_dict, self.date_map_dict)
         date_string = ""
         for key, value in date_duration.items():
             if value != 0:
@@ -118,6 +128,7 @@ class ISODuration(object):
 
     def generate(self, duration: ISODuration) -> str:
         duration_dict = duration.__dict__
+        self._is_number_valid(duration_dict)
         gen_date = self._generate_date(duration_dict)
         duration_dict = self._remove_date(duration_dict)
         gen_time = self._generate_time(duration_dict)
