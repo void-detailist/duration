@@ -63,11 +63,11 @@ class ISODuration(object):
             if ch.isalpha() and ch not in duration_symbols:
                 raise IncorrectDesignator(designator=ch)
 
-    def _is_pattern_valid(self, duration) -> None:
+    def _validate_pattern(self, duration) -> None:
         if not re.match(r"^P:?(\S*)T", duration):
             raise IncorrectPattern()
 
-    def _is_number_valid(self, duration_dict: dict) -> None:
+    def _is_validate_number(self, duration_dict: dict) -> None:
         for key, value in duration_dict.items():
             if isinstance(value, int) and value >= 0:
                 continue
@@ -75,7 +75,7 @@ class ISODuration(object):
 
     def _parse_time_duration(self, duration: str) -> dict:
         self._is_character_valid(duration)
-        self._is_pattern_valid(duration)
+        self._validate_pattern(duration)
         time_value = re.findall(r"T.*", duration)
         if time_value:
             match = re.findall(
@@ -84,19 +84,19 @@ class ISODuration(object):
             )
             if match:
                 duration_dict = convert_to_dict(match, add_letter="t")
-                self._is_number_valid(duration_dict)
+                self._is_validate_number(duration_dict)
                 return duration_dict
         return {}
 
     def _parse_date_duration(self, duration) -> dict:
         self._is_character_valid(duration)
-        self._is_pattern_valid(duration)
+        self._validate_pattern(duration)
         date_value = re.match(r"^P:?(\S*)T", duration)
         if date_value:
             match = re.findall(r"\d*Y|\d*M|\d*D", date_value[0])
             if match:
                 duration_dict = convert_to_dict(match, add_letter="p")
-                self._is_number_valid(duration_dict)
+                self._is_validate_number(duration_dict)
                 return duration_dict
         return {}
 
@@ -128,7 +128,7 @@ class ISODuration(object):
 
     def generate(self, duration: ISODuration) -> str:
         duration_dict = duration.__dict__
-        self._is_number_valid(duration_dict)
+        self._is_validate_number(duration_dict)
         gen_date = self._generate_date(duration_dict)
         duration_dict = self._remove_date(duration_dict)
         gen_time = self._generate_time(duration_dict)
