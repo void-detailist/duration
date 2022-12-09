@@ -4,6 +4,7 @@ import calendar
 import re
 from decimal import Decimal
 
+from src.exceptions import IncorrectDesignator, IncorrectPattern
 from src.util import convert_to_dict, rename
 
 
@@ -56,33 +57,38 @@ class ISODuration(object):
         )
         return Decimal(days_seconds)
 
-    def _is_character_valid(self, duration) -> bool:
+    def _is_character_valid(self, duration) -> None:
         duration_symbols = ["P", "T", "Y", "M", "D", "H", "M", "S", "m", "u", "n"]
         for ch in duration:
             if ch.isalpha() and ch not in duration_symbols:
-                return False
-        return True
+                raise IncorrectDesignator(designator=ch)
+
+    def _is_pattern_valid(self, duration):
+        if not re.match(r"^P:?(\S*)T", duration):
+            raise IncorrectPattern()
 
     def _parse_time_duration(self, duration: str) -> dict:
-        if self._is_character_valid(duration):
-            time_value = re.findall(r"T.*", duration)
-            if time_value:
-                match = re.findall(
-                    r"\d*H|\d*M|\d*S|\d*m|\d*u|\d*n",
-                    time_value[0],
-                )
-                if match:
-                    return convert_to_dict(match, add_letter="t")
-            return {}
+        self._is_character_valid(duration)
+        self._is_pattern_valid(duration)
+        time_value = re.findall(r"T.*", duration)
+        if time_value:
+            match = re.findall(
+                r"\d*H|\d*M|\d*S|\d*m|\d*u|\d*n",
+                time_value[0],
+            )
+            if match:
+                return convert_to_dict(match, add_letter="t")
+        return {}
 
     def _parse_date_duration(self, duration) -> dict:
-        if self._is_character_valid(duration):
-            date_value = re.match(r"^P:?(\S*)T", duration)
-            if date_value:
-                match = re.findall(r"\d*Y|\d*M|\d*D", date_value[0])
-                if match:
-                    return convert_to_dict(match, add_letter="p")
-            return {}
+        self._is_character_valid(duration)
+        self._is_pattern_valid(duration)
+        date_value = re.match(r"^P:?(\S*)T", duration)
+        if date_value:
+            match = re.findall(r"\d*Y|\d*M|\d*D", date_value[0])
+            if match:
+                return convert_to_dict(match, add_letter="p")
+        return {}
 
     def parse(self, duration: str) -> ISODuration:
         duration_dict = self._parse_date_duration(duration)
@@ -117,3 +123,26 @@ class ISODuration(object):
         gen_time = self._generate_time(duration_dict)
 
         return gen_date + gen_time
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def __eq__(self, other):
+        if isinstance(other, ISODuration):
+            return self.get_seconds() == other.get_seconds()
+
+    def __gt__(self, other: "ISODuration"):
+        if isinstance(other, ISODuration):
+            return self.get_seconds() > other.get_seconds()
+
+    def __lt__(self, other: "ISODuration"):
+        if isinstance(other, ISODuration):
+            return self.get_seconds() < other.get_seconds()
+
+    def __ge__(self, other: "ISODuration"):
+        if isinstance(other, ISODuration):
+            return self.get_seconds() >= other.get_seconds()
+
+    def __le__(self, other: "ISODuration"):
+        if isinstance(other, ISODuration):
+            return self.get_seconds() <= other.get_seconds()
