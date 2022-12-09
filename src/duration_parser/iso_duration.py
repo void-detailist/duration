@@ -45,15 +45,15 @@ class ISODuration(object):
 
     def get_seconds(self) -> Decimal:
         days_seconds = (
-                self.years * calendar.SECONDS_IN_YEAR
-                + self.months * calendar.SECONDS_IN_MONTH
-                + self.days * calendar.SECONDS_IN_DAY
-                + self.hours * calendar.SECONDS_IN_HOUR
-                + self.minutes * calendar.SECONDS_IN_MINUTE
-                + self.seconds
-                + self.miliseconds * calendar.SECONDS_IN_MILI
-                + self.microseconds * calendar.SECONDS_IN_MICRO
-                + self.nanoseconds * calendar.SECONDS_IN_NANO
+            self.years * calendar.SECONDS_IN_YEAR
+            + self.months * calendar.SECONDS_IN_MONTH
+            + self.days * calendar.SECONDS_IN_DAY
+            + self.hours * calendar.SECONDS_IN_HOUR
+            + self.minutes * calendar.SECONDS_IN_MINUTE
+            + self.seconds
+            + self.miliseconds * calendar.SECONDS_IN_MILI
+            + self.microseconds * calendar.SECONDS_IN_MICRO
+            + self.nanoseconds * calendar.SECONDS_IN_NANO
         )
         return Decimal(days_seconds)
 
