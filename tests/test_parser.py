@@ -1,7 +1,7 @@
 from _pytest.python_api import raises
 
-from src.exceptions import IncorrectDesignator
-from src.iso_duration import ISODuration
+from src.duration_parser.exceptions import IncorrectDesignator
+from src.duration_parser.iso_duration import ISODuration
 
 
 def test_parser():

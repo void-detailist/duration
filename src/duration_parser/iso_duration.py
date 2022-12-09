@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import calendar
 import re
 from decimal import Decimal
 
-from src.exceptions import IncorrectDesignator, IncorrectPattern
-from src.util import convert_to_dict, rename
+from . import calendar
+from .exceptions import IncorrectDesignator, IncorrectPattern
+from .util import convert_to_dict, rename
 
 
 class ISODuration(object):
@@ -45,15 +45,15 @@ class ISODuration(object):
 
     def get_seconds(self) -> Decimal:
         days_seconds = (
-            self.years * calendar.SECONDS_IN_YEAR
-            + self.months * calendar.SECONDS_IN_MONTH
-            + self.days * calendar.SECONDS_IN_DAY
-            + self.hours * calendar.SECONDS_IN_HOUR
-            + self.minutes * calendar.SECONDS_IN_MINUTE
-            + self.seconds
-            + self.miliseconds * calendar.SECONDS_IN_MILI
-            + self.microseconds * calendar.SECONDS_IN_MICRO
-            + self.nanoseconds * calendar.SECONDS_IN_NANO
+                self.years * calendar.SECONDS_IN_YEAR
+                + self.months * calendar.SECONDS_IN_MONTH
+                + self.days * calendar.SECONDS_IN_DAY
+                + self.hours * calendar.SECONDS_IN_HOUR
+                + self.minutes * calendar.SECONDS_IN_MINUTE
+                + self.seconds
+                + self.miliseconds * calendar.SECONDS_IN_MILI
+                + self.microseconds * calendar.SECONDS_IN_MICRO
+                + self.nanoseconds * calendar.SECONDS_IN_NANO
         )
         return Decimal(days_seconds)
 
@@ -103,8 +103,8 @@ class ISODuration(object):
                 date_string = date_string + str(value) + str(key)
         return "P" + date_string
 
-    def _generate_time(self, du: dict) -> str:
-        time_duration = rename(du, self.time_map_dict)
+    def _generate_time(self, duration_dict: dict) -> str:
+        time_duration = rename(duration_dict, self.time_map_dict)
         time_string = ""
         for key, value in time_duration.items():
             if value != 0:
