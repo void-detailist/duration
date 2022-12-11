@@ -31,17 +31,19 @@ class ISODuration(object):
         self.nanoseconds: int = 0
         self.microseconds: int = 0
 
-    def _wrap(self, duration_dict: dict) -> ISODuration:
-        self.years = duration_dict.get("pY") or 0
-        self.months = duration_dict.get("pM") or 0
-        self.days = duration_dict.get("pD") or 0
-        self.hours = duration_dict.get("tH") or 0
-        self.minutes = duration_dict.get("tM") or 0
-        self.seconds = duration_dict.get("tS") or 0
-        self.miliseconds = duration_dict.get("tm") or 0
-        self.nanoseconds = duration_dict.get("tn") or 0
-        self.microseconds = duration_dict.get("tu") or 0
-        return self
+    @staticmethod
+    def _wrap(duration_dict: dict) -> ISODuration:
+        iso_duration = ISODuration()
+        iso_duration.years = duration_dict.get("pY") or 0
+        iso_duration.months = duration_dict.get("pM") or 0
+        iso_duration.days = duration_dict.get("pD") or 0
+        iso_duration.hours = duration_dict.get("tH") or 0
+        iso_duration.minutes = duration_dict.get("tM") or 0
+        iso_duration.seconds = duration_dict.get("tS") or 0
+        iso_duration.miliseconds = duration_dict.get("tm") or 0
+        iso_duration.nanoseconds = duration_dict.get("tn") or 0
+        iso_duration.microseconds = duration_dict.get("tu") or 0
+        return iso_duration
 
     def get_seconds(self) -> Decimal:
         days_seconds = (
@@ -57,17 +59,20 @@ class ISODuration(object):
         )
         return Decimal(days_seconds)
 
-    def _is_character_valid(self, duration) -> None:
+    @staticmethod
+    def _is_character_valid(duration) -> None:
         duration_symbols = ["P", "T", "Y", "M", "D", "H", "M", "S", "m", "u", "n"]
         for ch in duration:
             if ch.isalpha() and ch not in duration_symbols:
                 raise IncorrectDesignator(designator=ch)
 
-    def _validate_pattern(self, duration) -> None:
+    @staticmethod
+    def _validate_pattern(duration) -> None:
         if not re.match(r"^P:?(\S*)T", duration):
             raise IncorrectPattern()
 
-    def _is_validate_number(self, duration_dict: dict) -> None:
+    @staticmethod
+    def _is_validate_number(duration_dict: dict) -> None:
         for key, value in duration_dict.items():
             if isinstance(value, int) and value >= 0:
                 continue
