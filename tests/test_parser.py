@@ -44,3 +44,23 @@ def test_valid_parser():
     assert iso_duration.miliseconds == miliseconds
     assert iso_duration.microseconds == microseconds
     assert iso_duration.nanoseconds == nanoseconds
+
+
+def test_comparison():
+    s1 = "P1DT"
+    s2 = "PT1n"
+    duration_1 = ISODuration().parse(s1)
+    duration_2 = ISODuration().parse(s2)
+    assert duration_1 > duration_2
+
+    s1 = "P3Y6M4DT12H24M12S10m12n80u"
+    s2 = "P3Y6M4DT12H24M12S10m12n80u"
+    duration_1 = ISODuration().parse(s1)
+    duration_2 = ISODuration().parse(s2)
+    assert duration_1 == duration_2
+
+    s1 = "P3Y6M4DT12H24M12S10m12n90u"
+    s2 = "P3Y6M4DT12H24M12S10m12n80u"
+    duration_1 = ISODuration().parse(s1)
+    duration_2 = ISODuration().parse(s2)
+    assert duration_2 < duration_1
