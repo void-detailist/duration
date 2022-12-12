@@ -5,7 +5,7 @@ from src.duration_parser.iso_duration import ISODuration
 
 
 def test_generator():
-    expected_result = "P3Y6M4DT12H24M12S10m12n80u"
+    expected_result = "P3Y6M4DT12H24M12S10m80u12n"
     duration = ISODuration()
     duration.years = 3
     duration.months = 6

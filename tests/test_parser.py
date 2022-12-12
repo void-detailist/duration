@@ -5,11 +5,11 @@ from src.duration_parser.iso_duration import ISODuration
 
 
 def test_parser():
-    s = "P3Y6M4DT12H24M12S10m12n80u"
+    s = "P3Y6M4DT12H24M12S10m80u12n"
     s2 = "PT1n"
     s3 = "P1DT"
-    s4 = "P3Y6M4DT12H24M12S10m12n80u"
-    s5 = "P3Y6M4DT12H24M12S10m12n90u"
+    s4 = "P3Y6M4DT12H24M12S10m80u12n"
+    s5 = "P3Y6M4DT12H24M12S10m90u12n"
 
     duration_list = [s, s2, s3, s4, s5]
     for duration_value in duration_list:
@@ -18,7 +18,7 @@ def test_parser():
 
 
 def test_incorrect_designator():
-    duration_string = "x3Y6M4DT12H24M12S10m12n80u"
+    duration_string = "x3Y6M4DT12H24M12S10m80u12n"
     with raises(IncorrectDesignator):
         ISODuration().parse(duration_string)
 
@@ -33,7 +33,7 @@ def test_valid_parser():
     miliseconds = 10
     microseconds = 80
     nanoseconds = 12
-    duration_string = "P3Y6M4DT12H24M12S10m12n80u"
+    duration_string = "P3Y6M4DT12H24M12S10m80u12n"
     iso_duration = ISODuration().parse(duration_string)
     assert iso_duration.years == year
     assert iso_duration.months == month
@@ -53,14 +53,14 @@ def test_comparison():
     duration_2 = ISODuration().parse(s2)
     assert duration_1 > duration_2
 
-    s1 = "P3Y6M4DT12H24M12S10m12n80u"
-    s2 = "P3Y6M4DT12H24M12S10m12n80u"
+    s1 = "P3Y6M4DT12H24M12S10m80u12n"
+    s2 = "P3Y6M4DT12H24M12S10m80u12n"
     duration_1 = ISODuration().parse(s1)
     duration_2 = ISODuration().parse(s2)
     assert duration_1 == duration_2
 
-    s1 = "P3Y6M4DT12H24M12S10m12n90u"
-    s2 = "P3Y6M4DT12H24M12S10m12n80u"
+    s1 = "P3Y6M4DT12H24M12S10m90u12n"
+    s2 = "P3Y6M4DT12H24M12S10m80u12n"
     duration_1 = ISODuration().parse(s1)
     duration_2 = ISODuration().parse(s2)
     assert duration_2 < duration_1

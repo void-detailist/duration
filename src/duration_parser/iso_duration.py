@@ -7,6 +7,20 @@ from . import calendar
 from .exceptions import IncorrectDesignator, IncorrectNumber, IncorrectPattern
 from .util import convert_to_dict, rename
 
+ISO8601_PERIOD_REGEX = re.compile(
+    r"^(?P<sign>[+-])?"
+    r"P(?!\b)"
+    r"(?P<years>[0-9]+([0-9]+)?Y)?"
+    r"(?P<months>[0-9]+([0-9]+)?M)?"
+    r"(?P<days>[0-9]+([0-9]+)?D)?"
+    r"((?P<separator>T)(?P<hours>[0-9]+([0-9]+)?H)?"
+    r"(?P<minutes>[0-9]+([0-9]+)?M)?"
+    r"(?P<seconds>[0-9]+([0-9]+)?S)?"
+    r"(?P<miliseconds>[0-9]+([0-9]+)?m)?"
+    r"(?P<microseconds>[0-9]+([0-9]+)?u)?"
+    r"(?P<nanoseconds>[0-9]+([0-9]+)?n)?)?$"
+)
+
 
 class ISODuration(object):
     date_map_dict = {"years": "Y", "months": "M", "days": "D"}
@@ -16,8 +30,8 @@ class ISODuration(object):
         "minutes": "M",
         "seconds": "S",
         "miliseconds": "m",
-        "nanoseconds": "n",
         "microseconds": "u",
+        "nanoseconds": "n",
     }
 
     def __init__(self):
@@ -28,8 +42,8 @@ class ISODuration(object):
         self.minutes: int = 0
         self.seconds: int = 0
         self.miliseconds: int = 0
-        self.nanoseconds: int = 0
         self.microseconds: int = 0
+        self.nanoseconds: int = 0
 
     @staticmethod
     def _wrap(duration_dict: dict) -> ISODuration:
@@ -41,8 +55,8 @@ class ISODuration(object):
         iso_duration.minutes = duration_dict.get("tM", 0)
         iso_duration.seconds = duration_dict.get("tS", 0)
         iso_duration.miliseconds = duration_dict.get("tm", 0)
-        iso_duration.nanoseconds = duration_dict.get("tn", 0)
         iso_duration.microseconds = duration_dict.get("tu", 0)
+        iso_duration.nanoseconds = duration_dict.get("tn", 0)
         return iso_duration
 
     def get_seconds(self) -> Decimal:
@@ -68,7 +82,7 @@ class ISODuration(object):
 
     @staticmethod
     def _validate_pattern(duration) -> None:
-        if not re.match(r"^P:?(\S*)T", duration):
+        if not ISO8601_PERIOD_REGEX.match(duration):
             raise IncorrectPattern()
 
     @staticmethod
@@ -79,8 +93,6 @@ class ISODuration(object):
             raise IncorrectNumber()
 
     def _parse_time_duration(self, duration: str) -> dict:
-        self._is_character_valid(duration)
-        self._validate_pattern(duration)
         time_value = re.findall(r"T.*", duration)
         if time_value:
             match = re.findall(
@@ -94,8 +106,6 @@ class ISODuration(object):
         return {}
 
     def _parse_date_duration(self, duration) -> dict:
-        self._is_character_valid(duration)
-        self._validate_pattern(duration)
         date_value = re.match(r"^P:?(\S*)T", duration)
         if date_value:
             match = re.findall(r"\d*Y|\d*M|\d*D", date_value[0])
@@ -106,6 +116,8 @@ class ISODuration(object):
         return {}
 
     def parse(self, duration: str) -> ISODuration:
+        self._is_character_valid(duration)
+        self._validate_pattern(duration)
         duration_dict = self._parse_date_duration(duration)
         duration_dict.update(self._parse_time_duration(duration))
         return self._wrap(duration_dict)
