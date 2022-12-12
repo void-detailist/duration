@@ -10,23 +10,27 @@ def split_flot_string_gen(string_value: str) -> [str, float]:
             yield string_part
 
 
-def rename(old_dict, keymap) -> dict:
+def rename_dict(old_dict, keymap) -> dict:
     new_dict = {}
-    for key, value in zip(keymap.keys(), old_dict.values()):
-        new_key = keymap.get(key, key)
-        new_dict[new_key] = old_dict[key]
+    for key, value in keymap.items():
+        if key in old_dict:
+            new_key = keymap.get(key)
+            new_dict[new_key] = old_dict.get(key)
     return new_dict
 
 
-def convert_to_dict(string_list: list, add_letter: str) -> dict:
+def convert_to_dict(string_list: list) -> dict:
     """
     split 3M to {M:3}
-    :param add_letter:
     :param string_list:
     :return: dictionary
     """
     dikt = {}
     for string in string_list:
         value, symbol = split_flot_string_gen(string)
-        dikt[add_letter + symbol] = int(value)
+        dikt[symbol] = int(value)
     return dikt
+
+
+def switch_key_value(dikt: dict) -> dict:
+    return {y: x for x, y in dikt.items()}
