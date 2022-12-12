@@ -34,15 +34,15 @@ class ISODuration(object):
     @staticmethod
     def _wrap(duration_dict: dict) -> ISODuration:
         iso_duration = ISODuration()
-        iso_duration.years = duration_dict.get("pY") or 0
-        iso_duration.months = duration_dict.get("pM") or 0
-        iso_duration.days = duration_dict.get("pD") or 0
-        iso_duration.hours = duration_dict.get("tH") or 0
-        iso_duration.minutes = duration_dict.get("tM") or 0
-        iso_duration.seconds = duration_dict.get("tS") or 0
-        iso_duration.miliseconds = duration_dict.get("tm") or 0
-        iso_duration.nanoseconds = duration_dict.get("tn") or 0
-        iso_duration.microseconds = duration_dict.get("tu") or 0
+        iso_duration.years = duration_dict.get("pY", 0)
+        iso_duration.months = duration_dict.get("pM", 0)
+        iso_duration.days = duration_dict.get("pD", 0)
+        iso_duration.hours = duration_dict.get("tH", 0)
+        iso_duration.minutes = duration_dict.get("tM", 0)
+        iso_duration.seconds = duration_dict.get("tS", 0)
+        iso_duration.miliseconds = duration_dict.get("tm", 0)
+        iso_duration.nanoseconds = duration_dict.get("tn", 0)
+        iso_duration.microseconds = duration_dict.get("tu", 0)
         return iso_duration
 
     def get_seconds(self) -> Decimal:
@@ -53,11 +53,11 @@ class ISODuration(object):
             + self.hours * calendar.SECONDS_IN_HOUR
             + self.minutes * calendar.SECONDS_IN_MINUTE
             + self.seconds
-            + self.miliseconds * calendar.SECONDS_IN_MILI
-            + self.microseconds * calendar.SECONDS_IN_MICRO
-            + self.nanoseconds * calendar.SECONDS_IN_NANO
+            + Decimal(self.miliseconds * calendar.SECONDS_IN_MILI)
+            + Decimal(self.microseconds * calendar.SECONDS_IN_MICRO)
+            + Decimal(self.nanoseconds * calendar.SECONDS_IN_NANO)
         )
-        return Decimal(days_seconds)
+        return days_seconds
 
     @staticmethod
     def _is_character_valid(duration) -> None:
