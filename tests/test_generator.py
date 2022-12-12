@@ -1,34 +1,37 @@
 from _pytest.python_api import raises
 
+from src.duration_parser import iso_duration
+from src.duration_parser.duration import Duration
 from src.duration_parser.exceptions import IncorrectNumber
-from src.duration_parser.iso_duration import ISODuration
 
 
 def test_generator():
     expected_result = "P3Y6M4DT12H24M12S10m80u12n"
-    duration = ISODuration()
-    duration.years = 3
-    duration.months = 6
-    duration.days = 4
-    duration.hours = 12
-    duration.minutes = 24
-    duration.seconds = 12
-    duration.miliseconds = 10
-    duration.nanoseconds = 12
-    duration.microseconds = 80
-    generated_duration = ISODuration().generate(duration)
+    duration_dict = {
+        "years": 3,
+        "months": 6,
+        "days": 4,
+        "hours": 12,
+        "minutes": 24,
+        "seconds": 12,
+        "miliseconds": 10,
+        "microseconds": 80,
+        "nanoseconds": 12,
+    }
+    duration = Duration(duration_dict)
+
+    generated_duration = iso_duration.generate(duration)
     assert generated_duration == expected_result
 
 
 def test_invalid_float_number():
     with raises(IncorrectNumber):
-        duration = ISODuration()
-        duration.years = 3.1
-        ISODuration().generate(duration)
+        duration_dict = {"years": 3.1}
+        duration = Duration(duration_dict)
+        iso_duration.generate(duration)
 
 
 def test_invalid_negative_number():
     with raises(IncorrectNumber):
-        duration = ISODuration()
-        duration.years = -2
-        ISODuration().generate(duration)
+        duration = Duration({"years": -2})
+        iso_duration.generate(duration)
