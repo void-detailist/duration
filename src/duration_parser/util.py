@@ -30,7 +30,3 @@ def convert_to_dict(string_list: list) -> dict:
         value, symbol = split_flot_string_gen(string)
         dikt[symbol] = int(value)
     return dikt
-
-
-def switch_key_value(dikt: dict) -> dict:
-    return {y: x for x, y in dikt.items()}
