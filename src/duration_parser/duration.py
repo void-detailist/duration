@@ -35,19 +35,24 @@ class Duration(object):
     def __eq__(self, other):
         if isinstance(other, Duration):
             return self.get_seconds() == other.get_seconds()
+        return NotImplemented
 
     def __gt__(self, other: "Duration"):
         if isinstance(other, Duration):
             return self.get_seconds() > other.get_seconds()
+        return NotImplemented
 
     def __lt__(self, other: "Duration"):
         if isinstance(other, Duration):
             return self.get_seconds() < other.get_seconds()
+        return NotImplemented
 
     def __ge__(self, other: "Duration"):
         if isinstance(other, Duration):
             return self.get_seconds() >= other.get_seconds()
+        return NotImplemented
 
     def __le__(self, other: "Duration"):
         if isinstance(other, Duration):
             return self.get_seconds() <= other.get_seconds()
+        return NotImplemented
