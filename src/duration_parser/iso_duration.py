@@ -19,25 +19,52 @@ ISO8601_PERIOD_REGEX = re.compile(
     r"(?P<microseconds>[0-9]+([0-9]+)?u)?"
     r"(?P<nanoseconds>[0-9]+([0-9]+)?n)?)?$"
 )
-date_map_dict = {"years": "Y", "months": "M", "days": "D"}
+date_map_dict = {"Y": "years", "M": "months", "D": "days"}
 
 time_map_dict = {
-    "hours": "H",
-    "minutes": "M",
-    "seconds": "S",
-    "miliseconds": "m",
-    "microseconds": "u",
-    "nanoseconds": "n",
+    "H": "hours",
+    "M": "minutes",
+    "S": "seconds",
+    "m": "miliseconds",
+    "u": "microseconds",
+    "n": "nanoseconds",
 }
 
 
 def generate(duration: Duration) -> str:
     duration_dict = duration.__dict__
     _validate_number(duration_dict)
-    gen_date = _generate_date(duration_dict)
-    duration_dict = _remove_date(duration_dict)
-    gen_time = _generate_time(duration_dict)
-    return gen_date + gen_time
+    _date = _generate_date(duration_dict)
+    _time = _generate_time(duration_dict)
+    return f"{_date}{_time}"
+
+
+def _generate_date(duration_dict: dict):
+    _validate_number(duration_dict)
+    _ = (
+        lambda key, symbol: f"{duration_dict[key]}{symbol}"
+        if duration_dict.get(key, 0) > 0
+        else ""
+    )
+    return "P" + "".join([_("years", "Y"), _("months", "M"), _("days", "D")])
+
+
+def _generate_time(duration_dict: dict):
+    _ = (
+        lambda key, symbol: f"{duration_dict[key]}{symbol}"
+        if duration_dict.get(key, 0) > 0
+        else ""
+    )
+    return "T" + "".join(
+        [
+            _("hours", "H"),
+            _("minutes", "M"),
+            _("seconds", "S"),
+            _("miliseconds", "m"),
+            _("microseconds", "u"),
+            _("nanoseconds", "n"),
+        ]
+    )
 
 
 def parse(duration: str) -> Duration:
@@ -76,9 +103,7 @@ def _parse_time_duration(duration: str) -> dict:
         )
         if match:
             duration_dict = util.convert_to_dict(match)
-            duration_dict = util.rename_dict(
-                duration_dict, util.switch_key_value(time_map_dict)
-            )
+            duration_dict = util.rename_dict(duration_dict, time_map_dict)
             return duration_dict
     return {}
 
@@ -90,32 +115,6 @@ def _parse_date_duration(duration) -> dict:
         if match:
             duration_dict = util.convert_to_dict(match)
             _validate_number(duration_dict)
-            duration_dict = util.rename_dict(
-                duration_dict, util.switch_key_value(date_map_dict)
-            )
+            duration_dict = util.rename_dict(duration_dict, date_map_dict)
             return duration_dict
     return {}
-
-
-def _generate_date(duration_dict: dict) -> str:
-    date_duration = util.rename_dict(duration_dict, date_map_dict)
-    date_string = ""
-    for key, value in date_duration.items():
-        if value != 0:
-            date_string = date_string + str(value) + str(key)
-    return "P" + date_string
-
-
-def _generate_time(duration_dict: dict) -> str:
-    time_duration = util.rename_dict(duration_dict, time_map_dict)
-    time_string = ""
-    for key, value in time_duration.items():
-        if value != 0:
-            time_string = time_string + str(value) + str(key)
-    return "T" + time_string
-
-
-def _remove_date(duration_dict: dict) -> dict:
-    for key, value in date_map_dict.items():
-        del duration_dict[key]
-    return duration_dict
