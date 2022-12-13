@@ -30,6 +30,13 @@ class Duration(object):
         return days_seconds
 
     def __str__(self):
+        duration = ""
+        for key, value in self.__dict__.items():
+            if value > 0:
+                duration = duration + f"{value} {key} "
+        return duration
+
+    def __repr__(self):
         return str(self.__dict__)
 
     def __eq__(self, other):
@@ -56,3 +63,10 @@ class Duration(object):
         if isinstance(other, Duration):
             return self.get_seconds() <= other.get_seconds()
         return NotImplemented
+
+    def __hash__(self):
+        """
+        Return a hash of this instance so that it can be used in, for
+        example, dicts and sets.
+        """
+        return hash(self.get_seconds())
