@@ -1,7 +1,4 @@
-from _pytest.python_api import raises
-
 from src.duration_parser import iso_duration
-from src.duration_parser.exceptions import IncorrectDesignator
 
 
 def test_parser():
@@ -15,12 +12,6 @@ def test_parser():
     for duration_value in duration_list:
         d = iso_duration.parse(duration_value)
         assert iso_duration.generate(d) == duration_value
-
-
-def test_incorrect_designator():
-    duration_string = "x3Y6M4DT12H24M12S10m80u12n"
-    with raises(IncorrectDesignator):
-        iso_duration.parse(duration_string)
 
 
 def test_valid_parser():

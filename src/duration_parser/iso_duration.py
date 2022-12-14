@@ -2,45 +2,38 @@ from __future__ import annotations
 
 import re
 
-from . import util
 from .duration import Duration
-from .exceptions import IncorrectDesignator, IncorrectNumber, IncorrectPattern
+from .exceptions import IncorrectPattern
+
+months = r"(1[012]|[1-9])"
+days = r"([1-9]|[12]\d|3[01])"
+minutes_seconds = r"([0-5]?\d)"
+miliseconds = r"([1-9]|[1-9]\d|[1-9]\d\d)"
 
 ISO8601_PERIOD_REGEX = re.compile(
-    r"^(?P<sign>[+-])?"
     r"P(?!\b)"
-    r"(?P<years>[0-9]+([0-9]+)?Y)?"
-    r"(?P<months>[0-9]+([0-9]+)?M)?"
-    r"(?P<days>[0-9]+([0-9]+)?D)?"
-    r"((?P<separator>T)(?P<hours>[0-9]+([0-9]+)?H)?"
-    r"(?P<minutes>[0-9]+([0-9]+)?M)?"
-    r"(?P<seconds>[0-9]+([0-9]+)?S)?"
-    r"(?P<miliseconds>[0-9]+([0-9]+)?m)?"
-    r"(?P<microseconds>[0-9]+([0-9]+)?u)?"
-    r"(?P<nanoseconds>[0-9]+([0-9]+)?n)?)?$"
+    r"(?P<years>\d(\d+)?Y)?"
+    rf"(?P<months>{months}?M)?"
+    rf"(?P<days>{days}?D)?"
+    r"((?P<separator>T)(?P<hours>\d+(\d+)?H)?"
+    rf"(?P<minutes>{minutes_seconds}?M)?"
+    rf"(?P<seconds>{minutes_seconds}?S)?"
+    rf"(?P<miliseconds>{miliseconds}?m)?"
+    r"(?P<microseconds>\d+(\d+)?u)?"
+    r"(?P<nanoseconds>\d+(\d+)?n)?)?$"
 )
-date_map_dict = {"Y": "years", "M": "months", "D": "days"}
-
-time_map_dict = {
-    "H": "hours",
-    "M": "minutes",
-    "S": "seconds",
-    "m": "miliseconds",
-    "u": "microseconds",
-    "n": "nanoseconds",
-}
 
 
 def generate(duration: Duration) -> str:
     duration_dict = duration.__dict__
-    _validate_number(duration_dict)
     _date = _generate_date(duration_dict)
     _time = _generate_time(duration_dict)
+    if not ISO8601_PERIOD_REGEX.match(f"{_date}{_time}"):
+        raise IncorrectPattern()
     return f"{_date}{_time}"
 
 
 def _generate_date(duration_dict: dict):
-    _validate_number(duration_dict)
     _ = (
         lambda key, symbol: f"{duration_dict[key]}{symbol}"
         if duration_dict.get(key, 0) > 0
@@ -68,53 +61,26 @@ def _generate_time(duration_dict: dict):
 
 
 def parse(duration: str) -> Duration:
-    _is_character_valid(duration)
-    _validate_pattern(duration)
-    duration_dict = _parse_date_duration(duration)
-    duration_dict.update(_parse_time_duration(duration))
+    match = ISO8601_PERIOD_REGEX.match(duration)
+    if match:
+        group = match.groupdict()
+        duration_dict = {
+            "years": split(group.get("years")),
+            "months": split(group.get("months")),
+            "days": split(group.get("days")),
+            "hours": split(group.get("hours")),
+            "minutes": split(group.get("minutes")),
+            "seconds": split(group.get("seconds")),
+            "miliseconds": split(group.get("miliseconds")),
+            "microseconds": split(group.get("microseconds")),
+            "nanoseconds": split(group.get("nanoseconds")),
+        }
+    else:
+        raise IncorrectPattern()
     return Duration(duration_dict)
 
 
-def _is_character_valid(duration) -> None:
-    duration_symbols = ["P", "T", "Y", "M", "D", "H", "M", "S", "m", "u", "n"]
-    for ch in duration:
-        if ch.isalpha() and ch not in duration_symbols:
-            raise IncorrectDesignator(designator=ch)
-
-
-def _validate_pattern(duration) -> None:
-    if not ISO8601_PERIOD_REGEX.match(duration):
-        raise IncorrectPattern()
-
-
-def _validate_number(duration_dict: dict) -> None:
-    for key, value in duration_dict.items():
-        if isinstance(value, int) and value >= 0:
-            continue
-        raise IncorrectNumber()
-
-
-def _parse_time_duration(duration: str) -> dict:
-    time_value = re.findall(r"T.*", duration)
-    if time_value:
-        match = re.findall(
-            r"\d*H|\d*M|\d*S|\d*m|\d*u|\d*n",
-            time_value[0],
-        )
-        if match:
-            duration_dict = util.convert_to_dict(match)
-            duration_dict = util.rename_dict(duration_dict, time_map_dict)
-            return duration_dict
-    return {}
-
-
-def _parse_date_duration(duration) -> dict:
-    date_value = re.match(r"^P:?(\S*)T", duration)
-    if date_value:
-        match = re.findall(r"\d*Y|\d*M|\d*D", date_value[0])
-        if match:
-            duration_dict = util.convert_to_dict(match)
-            _validate_number(duration_dict)
-            duration_dict = util.rename_dict(duration_dict, date_map_dict)
-            return duration_dict
-    return {}
+def split(string_value) -> int:
+    if string_value is not None:
+        return int("".join([n for n in string_value if n.isdigit()]))
+    return 0
