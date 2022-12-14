@@ -1,4 +1,4 @@
-from src.duration_parser import iso_duration
+from src.duration import iso_duration
 
 
 def test_parser():

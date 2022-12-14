@@ -1,8 +1,8 @@
 from _pytest.python_api import raises
 
-from src.duration_parser import iso_duration
-from src.duration_parser.duration import Duration
-from src.duration_parser.exceptions import IncorrectPattern
+from src.duration import iso_duration
+from src.duration.duration import Duration
+from src.duration.exceptions import IncorrectPattern
 
 
 def test_generator():
