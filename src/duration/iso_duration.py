@@ -19,29 +19,15 @@ ISO8601_PERIOD_REGEX = re.compile(
 )
 
 
-def generate(duration: Duration) -> str:
+def generate(duration: Duration):
     duration_dict = duration.__dict__
-    _date = _generate_date(duration_dict)
-    _time = _generate_time(duration_dict)
-    return f"{_date}{_time}"
-
-
-def _generate_date(duration_dict: dict):
     _ = (
         lambda key, symbol: f"{duration_dict[key]}{symbol}"
         if duration_dict.get(key, 0) > 0
         else ""
     )
-    return "P" + "".join([_("years", "Y"), _("months", "M"), _("days", "D")])
-
-
-def _generate_time(duration_dict: dict):
-    _ = (
-        lambda key, symbol: f"{duration_dict[key]}{symbol}"
-        if duration_dict.get(key, 0) > 0
-        else ""
-    )
-    return "T" + "".join(
+    _date = "P" + "".join([_("years", "Y"), _("months", "M"), _("days", "D")])
+    _time = "T" + "".join(
         [
             _("hours", "H"),
             _("minutes", "M"),
@@ -51,6 +37,7 @@ def _generate_time(duration_dict: dict):
             _("nanoseconds", "n"),
         ]
     )
+    return f"{_date}{_time}"
 
 
 def parse(duration: str) -> Duration:
