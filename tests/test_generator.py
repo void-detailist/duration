@@ -19,9 +19,7 @@ def test_generator():
         "nanoseconds": 12,
     }
     duration = Duration(duration_dict)
-
     generated_duration = iso_duration.generate(duration)
-    print(generated_duration)
     assert generated_duration == expected_result
 
 
