@@ -8,12 +8,12 @@ from .exceptions import IncorrectPattern
 ISO8601_PERIOD_REGEX = re.compile(
     r"P(?!\b)"
     r"(?P<years>\d(\d+)?Y)?"
-    rf"(?P<months>\d(\d+)?M)?"
-    rf"(?P<days>\d(\d+)?D)?"
+    r"(?P<months>\d(\d+)?M)?"
+    r"(?P<days>\d(\d+)?D)?"
     r"((?P<separator>T)(?P<hours>\d+(\d+)?H)?"
-    rf"(?P<minutes>\d(\d+)?M)?"
-    rf"(?P<seconds>\d(\d+)?S)?"
-    rf"(?P<miliseconds>\d(\d+)?m)?"
+    r"(?P<minutes>\d(\d+)?M)?"
+    r"(?P<seconds>\d(\d+)?S)?"
+    r"(?P<miliseconds>\d(\d+)?m)?"
     r"(?P<microseconds>\d+(\d+)?u)?"
     r"(?P<nanoseconds>\d+(\d+)?n)?)?$"
 )
@@ -23,8 +23,6 @@ def generate(duration: Duration) -> str:
     duration_dict = duration.__dict__
     _date = _generate_date(duration_dict)
     _time = _generate_time(duration_dict)
-    if not ISO8601_PERIOD_REGEX.match(f"{_date}{_time}"):
-        raise IncorrectPattern()
     return f"{_date}{_time}"
 
 
