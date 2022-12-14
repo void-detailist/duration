@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from . import calendar
+from . import calendar, iso_duration
 
 
 class Duration(object):
@@ -30,11 +30,7 @@ class Duration(object):
         return days_seconds
 
     def __str__(self):
-        duration = ""
-        for key, value in self.__dict__.items():
-            if value > 0:
-                duration = duration + f"{value} {key} "
-        return duration
+        return iso_duration.generate(self)
 
     def __repr__(self):
         return str(self.__dict__)
