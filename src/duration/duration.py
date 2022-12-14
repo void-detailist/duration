@@ -44,43 +44,29 @@ class Duration(object):
     def __eq__(self, other):
         if isinstance(other, Duration):
             return self.get_seconds() == other.get_seconds()
-        return NotImplemented
+        else:
+            return self.get_seconds() == other
 
     def __gt__(self, other):
         if isinstance(other, Duration):
             return self.get_seconds() > other.get_seconds()
-        if isinstance(other, int):
+        else:
             return self.get_seconds() > other
-        if isinstance(other, Decimal):
-            return self.get_seconds() > other
-        return NotImplemented
 
     def __lt__(self, other):
         if isinstance(other, Duration):
             return self.get_seconds() < other.get_seconds()
-        if isinstance(other, int):
-            return self.get_seconds() < other
-        if isinstance(other, Decimal):
-            return self.get_seconds() < other
-        return NotImplemented
+        return self.get_seconds() < other
 
     def __ge__(self, other):
         if isinstance(other, Duration):
             return self.get_seconds() >= other.get_seconds()
-        if isinstance(other, int):
-            return self.get_seconds() >= other
-        if isinstance(other, Decimal):
-            return self.get_seconds() >= other
-        return NotImplemented
+        return self.get_seconds() >= other
 
     def __le__(self, other):
         if isinstance(other, Duration):
             return self.get_seconds() <= other.get_seconds()
-        if isinstance(other, int):
-            return self.get_seconds() <= other
-        if isinstance(other, Decimal):
-            return self.get_seconds() <= other
-        return NotImplemented
+        return self.get_seconds() <= other
 
     def __hash__(self):
         """
