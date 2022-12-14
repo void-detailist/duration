@@ -82,5 +82,5 @@ def parse(duration: str) -> Duration:
 
 def split(string_value) -> int:
     if string_value is not None:
-        return int("".join([n for n in string_value if n.isdigit()]))
+        return int(string_value[:-1])
     return 0
