@@ -43,7 +43,6 @@ def test_comparison():
     duration_1 = iso_duration.parse(s1)
     duration_2 = iso_duration.parse(s2)
     assert duration_1 > duration_2
-
     s1 = "P3Y6M4DT12H24M12S10m80u12n"
     s2 = "P3Y6M4DT12H24M12S10m80u12n"
     duration_1 = iso_duration.parse(s1)
@@ -55,3 +54,7 @@ def test_comparison():
     duration_1 = iso_duration.parse(s1)
     duration_2 = iso_duration.parse(s2)
     assert duration_2 < duration_1
+
+    seconds_value = 12
+    assert duration_2 > seconds_value
+
