@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from . import calendar, iso_duration
+from .exceptions import IncorrectValue
 
 
 class Duration(object):
@@ -28,6 +29,11 @@ class Duration(object):
             + Decimal(self.nanoseconds * calendar.SECONDS_IN_NANO)
         )
         return days_seconds
+
+    def __setattr__(self, key, value):
+        if not isinstance(value, int) or value < 0:
+            raise IncorrectValue()
+        super(Duration, self).__setattr__(key, value)
 
     def __str__(self):
         return iso_duration.generate(self)
