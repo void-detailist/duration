@@ -5,11 +5,6 @@ import re
 from .duration import Duration
 from .exceptions import IncorrectPattern
 
-months = r"(1[012]|[1-9])"
-days = r"([1-9]|[12]\d|3[01])"
-minutes_seconds = r"([0-5]?\d)"
-miliseconds = r"([1-9]|[1-9]\d|[1-9]\d\d)"
-
 ISO8601_PERIOD_REGEX = re.compile(
     r"P(?!\b)"
     r"(?P<years>\d(\d+)?Y)?"
