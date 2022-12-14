@@ -57,4 +57,3 @@ def test_comparison():
 
     seconds_value = 12
     assert duration_2 > seconds_value
-
