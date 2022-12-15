@@ -1,8 +1,6 @@
 from _pytest.python_api import raises
 
-from src.duration import iso_duration
-from src.duration.duration import Duration
-from src.duration.exceptions import IncorrectPattern, IncorrectValue
+from src.duration import Duration, IncorrectValue, generate
 
 
 def test_generator():
@@ -19,7 +17,7 @@ def test_generator():
         "nanoseconds": 12,
     }
     duration = Duration(duration_dict)
-    generated_duration = iso_duration.generate(duration)
+    generated_duration = generate(duration)
     assert generated_duration == expected_result
 
 
@@ -27,11 +25,11 @@ def test_invalid_float_number():
     with raises(IncorrectValue):
         duration_dict = {"years": 3.1}
         duration = Duration(duration_dict)
-        iso_duration.generate(duration)
+        generate(duration)
 
 
 def test_invalid_negative_number():
     with raises(IncorrectValue):
         duration_dict = {"years": -3}
         duration = Duration(duration_dict)
-        iso_duration.generate(duration)
+        generate(duration)
