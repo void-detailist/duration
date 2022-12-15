@@ -1,11 +1,9 @@
-from .duration import Duration
-from .exceptions import IncorrectPattern, IncorrectValue
-from .iso_duration import generate, parse
-
 __all__ = (
     "parse",
     "generate",
-    "Duration",
     "IncorrectValue",
     "IncorrectPattern",
 )
+
+from src.duration.exceptions import IncorrectPattern, IncorrectValue
+from src.duration.iso_duration import generate, parse
