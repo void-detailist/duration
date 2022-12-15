@@ -19,7 +19,7 @@ ISO8601_PERIOD_REGEX = re.compile(
 )
 
 
-def generate(duration: Duration):
+def generate(duration: Duration) -> str:
     duration_dict = duration.__dict__
     _ = (
         lambda key, symbol: f"{duration_dict[key]}{symbol}"
