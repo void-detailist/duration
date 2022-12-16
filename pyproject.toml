@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "durationparser"
+name = "duration"
 version = "0.1.0"
 description = ""
-authors = ["xenups <xenups@outlook.com>"]
+authors = ["xenups <amirhossein@void-star.co>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

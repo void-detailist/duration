@@ -17,9 +17,8 @@ setup(
     packages=find_packages(where="src"),
     python_requires=">=3.7",
     zip_safe=False,
-    long_description="pars and generate iso 8601",
+    long_description="parse and generate iso 8601",
     long_description_content_type="text/markdown",
-
     keywords=[
         "datetime",
         "date",
