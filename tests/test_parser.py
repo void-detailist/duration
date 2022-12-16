@@ -1,17 +1,23 @@
+from decimal import Decimal
+
 from src.duration import iso_duration
 
 
 def test_parser():
-    s = "P3Y6M4DT12H24M12S10m80u12n"
-    s2 = "PT1n"
-    s3 = "P1DT"
-    s4 = "P3Y6M4DT12H24M12S10m80u12n"
-    s5 = "P3Y6M4DT12H24M12S10m90u12n"
+    duration_string_one = "P3Y6M4DT12H24M12S10m"
+    expected_result_one = Decimal("108217452.0100000000000000002")
 
-    duration_list = [s, s2, s3, s4, s5]
-    for duration_value in duration_list:
-        d = iso_duration.parse(duration_value)
-        assert iso_duration.generate(d) == duration_value
+    duration_string_two = "P1DT"
+    expected_result_two = 86400
+
+    duration_string_three = "P3YT"
+    expected_result_three = 92275200
+
+    durations = [duration_string_one, duration_string_two, duration_string_three]
+    expected_results = [expected_result_one, expected_result_two, expected_result_three]
+    for duration_value, result in zip(durations, expected_results):
+        duration = iso_duration.parse(duration_value)
+        assert duration.get_seconds() == result
 
 
 def test_valid_parser():
