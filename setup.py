@@ -7,7 +7,7 @@ with open("README.md", "r") as f:
     long_description = f.read()
 
 setup(
-    name="isoduration8601",
+    name="nano-duration",
     version=version,
     author="Amir Lesani",
     author_email="amirhossein@void-star.co",

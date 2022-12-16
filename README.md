@@ -1,4 +1,4 @@
-# duration: Operations with ISO 8601 durations.
+# nano-duration: Operations with ISO 8601 durations.
 
 ## What is this.
 

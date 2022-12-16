@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "duration"
+name = "nano-duration"
 version = "0.1.0"
 description = ""
 authors = ["xenups <amirhossein@void-star.co>"]
