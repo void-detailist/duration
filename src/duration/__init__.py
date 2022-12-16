@@ -1,9 +1,11 @@
-__all__ = (
-    "parse",
-    "generate",
-    "IncorrectValue",
-    "IncorrectPattern",
-)
+import os
+import sys
 
-from src.duration.exceptions import IncorrectPattern, IncorrectValue
-from src.duration.iso_duration import generate, parse
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(os.path.dirname(__file__))
+
+from duration.exceptions import IncorrectPattern, IncorrectValue  # noqa  # isort:skip
+from duration.iso_duration import generate, parse  # noqa  # isort:skip
+from duration.duration import Duration  # noqa  # isort:skip
+
+__all__ = ("parse", "generate", "IncorrectValue", "IncorrectPattern", "Duration")

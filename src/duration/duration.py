@@ -1,7 +1,7 @@
 from decimal import Decimal
 
-from . import calendar, iso_duration
-from .exceptions import IncorrectValue
+from duration import calendar, iso_duration
+from duration.exceptions import IncorrectValue
 
 
 class Duration(object):
@@ -31,9 +31,10 @@ class Duration(object):
         return days_seconds
 
     def __setattr__(self, key, value):
-        if not isinstance(value, int) or value < 0:
+        if isinstance(value, int) and value >= 0:
+            super(Duration, self).__setattr__(key, value)
+        else:
             raise IncorrectValue()
-        super(Duration, self).__setattr__(key, value)
 
     def __str__(self):
         return iso_duration.generate(self)
