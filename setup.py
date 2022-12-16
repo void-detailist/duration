@@ -10,7 +10,7 @@ setup(
     name="isoduration8601",
     version=version,
     author="Amir Lesani",
-    author_email="xenups@outlook.com",
+    author_email="amirhossein@void-star.co",
     description="Operations with ISO 8601 durations",
     url="https://github.com/bolsote/isoduration",
     package_dir={"": "src"},
