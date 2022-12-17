@@ -1,7 +1,7 @@
 from decimal import Decimal
 
-from duration import calendar, iso_duration
-from duration.exceptions import IncorrectValue
+from nano_duration import calendar, iso_duration
+from nano_duration.exceptions import IncorrectValue
 
 
 class Duration(object):

@@ -1,4 +1,4 @@
-# nano-duration: Operations with ISO 8601 durations.
+# nano_duration: Operations with ISO 8601 durations.
 
 ## What is this.
 
@@ -30,17 +30,19 @@ As this module maps ISO 8601 dates/times to standard Python data type.
 ### Parse:
 
 parses an ISO 8601 duration string into Duration object.
+
 ```python
-from duration import parse
+from nano_duration import parse
+
 duration = parse("P3Y6M4DT12H24M12S10m80u12n")
 ```
 
 ### Generate:
 
-generate a duration object into ISO 8601 duration string 
+generate a duration object into ISO 8601 duration string
 
 ```python
-from duration import Duration, generate
+from nano_duration import Duration, generate
 
 generate(
     Duration(

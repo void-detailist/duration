@@ -1,7 +1,7 @@
 from _pytest.python_api import raises
 
-from src.duration import IncorrectValue, generate
-from src.duration.duration import Duration
+from src.nano_duration import IncorrectValue, generate
+from src.nano_duration.duration import Duration
 
 
 def test_generator():

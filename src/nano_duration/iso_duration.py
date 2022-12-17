@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import re
 
-from duration.duration import Duration
-from duration.exceptions import IncorrectPattern
+from nano_duration.duration import Duration
+from nano_duration.exceptions import IncorrectPattern
 
 ISO8601_PERIOD_REGEX = re.compile(
     r"P(?!\b)"

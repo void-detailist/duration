@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from src.duration import iso_duration
+from src.nano_duration import iso_duration
 
 
 def test_parser():

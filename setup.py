@@ -7,7 +7,7 @@ with open("README.md", "r") as f:
     long_description = f.read()
 
 setup(
-    name="nano-duration",
+    name="nano_duration",
     version=version,
     author="Amir Lesani",
     author_email="amirhossein@void-star.co",
@@ -23,11 +23,11 @@ setup(
         "datetime",
         "date",
         "time",
-        "duration",
-        "duration-parsing",
-        "duration-string",
+        "nano_duration",
+        "nano_duration-parsing",
+        "nano_duration-string",
         "iso8601",
-        "iso8601-duration",
+        "iso8601-nano_duration",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
