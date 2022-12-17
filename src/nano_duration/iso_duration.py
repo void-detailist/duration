@@ -27,7 +27,8 @@ def generate(duration: Duration) -> str:
         else ""
     )
     _date = "P" + "".join([_("years", "Y"), _("months", "M"), _("days", "D")])
-    _time = "T" + "".join(
+
+    _time = "".join(
         [
             _("hours", "H"),
             _("minutes", "M"),
@@ -37,6 +38,8 @@ def generate(duration: Duration) -> str:
             _("nanoseconds", "n"),
         ]
     )
+    if _time:
+        _time = "T" + _time
     return f"{_date}{_time}"
 
 
