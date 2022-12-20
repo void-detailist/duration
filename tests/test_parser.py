@@ -7,10 +7,10 @@ def test_parser():
     duration_string_one = "P3Y6M4DT12H24M12S10m"
     expected_result_one = Decimal("108217452.0100000000000000002")
 
-    duration_string_two = "P1DT"
+    duration_string_two = "P1D"
     expected_result_two = 86400
 
-    duration_string_three = "P3YT"
+    duration_string_three = "P3Y"
     expected_result_three = 92275200
 
     durations = [duration_string_one, duration_string_two, duration_string_three]
@@ -44,7 +44,7 @@ def test_valid_parser():
 
 
 def test_comparison():
-    s1 = "P1DT"
+    s1 = "P1D"
     s2 = "PT1n"
     duration_1 = iso_duration.parse(s1)
     duration_2 = iso_duration.parse(s2)

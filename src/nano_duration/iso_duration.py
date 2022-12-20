@@ -45,6 +45,8 @@ def generate(duration: Duration) -> str:
 
 def parse(duration: str) -> Duration:
     match = ISO8601_PERIOD_REGEX.match(duration)
+    if duration[-1] == "T":
+        raise IncorrectPattern()
     if match:
         group = match.groupdict()
         duration_dict = {
