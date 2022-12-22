@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import re
 
+from nano_duration import calendar
+from nano_duration.delta_duration import DeltaDuration
 from nano_duration.duration import Duration
 from nano_duration.exceptions import IncorrectPattern
 
@@ -62,10 +64,33 @@ def parse(duration: str) -> Duration:
         }
     else:
         raise IncorrectPattern()
-    return Duration(duration_dict)
+    return Duration(**duration_dict)
 
 
 def split(string_value) -> int:
     if string_value is not None:
         return int(string_value[:-1])
     return 0
+
+
+def calculate_duration_parts(duration: Duration) -> DeltaDuration:
+    seconds = float(duration.get_seconds())
+    years = seconds // calendar.SECONDS_IN_YEAR
+    months = seconds // calendar.SECONDS_IN_MONTH
+    days = seconds // calendar.SECONDS_IN_DAY
+    hours = seconds // calendar.SECONDS_IN_HOUR
+    minutes = seconds // calendar.SECONDS_IN_MINUTE
+    miliseconds = seconds // calendar.SECONDS_IN_MILI
+    microseconds = seconds // calendar.SECONDS_IN_MICRO
+    nanoseconds = seconds // calendar.SECONDS_IN_NANO
+    return DeltaDuration(
+        to_years=years,
+        to_seconds=seconds,
+        to_months=months,
+        to_days=days,
+        to_hours=hours,
+        to_minutes=minutes,
+        to_miliseconds=miliseconds,
+        to_microseconds=microseconds,
+        to_nanoseconds=nanoseconds,
+    )

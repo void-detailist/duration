@@ -5,16 +5,27 @@ from nano_duration.exceptions import IncorrectValue
 
 
 class Duration(object):
-    def __init__(self, duration_dict: dict):
-        self.years = duration_dict.get("years", 0)
-        self.months = duration_dict.get("months", 0)
-        self.days = duration_dict.get("days", 0)
-        self.hours = duration_dict.get("hours", 0)
-        self.minutes = duration_dict.get("minutes", 0)
-        self.seconds = duration_dict.get("seconds", 0)
-        self.miliseconds = duration_dict.get("miliseconds", 0)
-        self.microseconds = duration_dict.get("microseconds", 0)
-        self.nanoseconds = duration_dict.get("nanoseconds", 0)
+    def __init__(
+        self,
+        years: float = 0,
+        months: float = 0,
+        days: float = 0,
+        hours: float = 0,
+        minutes: float = 0,
+        seconds: float = 0,
+        miliseconds: float = 0,
+        microseconds: float = 0,
+        nanoseconds: float = 0,
+    ):
+        self.years = years
+        self.months = months
+        self.days = days
+        self.hours = hours
+        self.minutes = minutes
+        self.seconds = seconds
+        self.miliseconds = miliseconds
+        self.microseconds = microseconds
+        self.nanoseconds = nanoseconds
 
     def get_seconds(self) -> Decimal:
         days_seconds = (
@@ -67,11 +78,4 @@ class Duration(object):
     def __le__(self, other):
         if isinstance(other, Duration):
             return self.get_seconds() <= other.get_seconds()
-        return self.get_seconds() <= other
-
-    def __hash__(self):
-        """
-        Return a hash of this instance so that it can be used in, for
-        example, dicts and sets.
-        """
-        return hash(self.get_seconds())
+        return self.get_seconds()

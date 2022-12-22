@@ -17,7 +17,7 @@ def test_generator():
         "microseconds": 80,
         "nanoseconds": 12,
     }
-    duration = Duration(duration_dict)
+    duration = Duration(**duration_dict)
     generated_duration = generate(duration)
     assert generated_duration == expected_result
 
@@ -25,12 +25,12 @@ def test_generator():
 def test_invalid_float_number():
     with raises(IncorrectValue):
         duration_dict = {"years": 3.1}
-        duration = Duration(duration_dict)
+        duration = Duration(**duration_dict)
         generate(duration)
 
 
 def test_invalid_negative_number():
     with raises(IncorrectValue):
         duration_dict = {"years": -3}
-        duration = Duration(duration_dict)
+        duration = Duration(**duration_dict)
         generate(duration)
