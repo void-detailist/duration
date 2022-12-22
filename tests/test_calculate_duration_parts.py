@@ -1,5 +1,5 @@
-from src.nano_duration.duration import Duration
 from src.nano_duration.delta_duration import DeltaDuration
+from src.nano_duration.duration import Duration
 from src.nano_duration.iso_duration import calculate_duration_parts
 
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nano_duration"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["xenups <amirhossein@void-star.co>"]
 readme = "README.md"
