@@ -10,7 +10,7 @@ from nano_duration.exceptions import (  # noqa  # isort:skip
 )  # noqa  # isort:skip
 from nano_duration.iso_duration import generate, parse  # noqa  # isort:skip
 from nano_duration.duration import Duration  # noqa  # isort:skip
-from nano_duration.delta_duration import DeltaDuration  # noqa  # isort:skip
+from nano_duration import calendar  # noqa  # isort:skip
 
 __all__ = (
     "parse",
@@ -18,5 +18,5 @@ __all__ = (
     "IncorrectValue",
     "IncorrectPattern",
     "Duration",
-    "DeltaDuration",
+    "calendar",
 )
