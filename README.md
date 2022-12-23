@@ -3,7 +3,7 @@
 ## What is this.
 
 ISO 8601 is most commonly known as a way to exchange date-times in textual format.
-to have more precision duration this package included  milliseconds, microseconds, and nanoseconds
+to have more precision duration this package included milliseconds, microseconds, and nanoseconds
 A lesser-known aspect of the standard is the representation of durations. They have a
 shape similar to this:
 
@@ -46,16 +46,14 @@ from nano_duration import Duration, generate
 
 generate(
     Duration(
-        {
-            "years": 3,
-            "months": 2,
-            "days": 3,
-            "hours": 5,
-            "seconds": 57,
-            "miliseconds": 8,
-            "microseconds": 30,
-            "nanoseconds": 20,
-        }
+        years=3,
+        months=2,
+        days=3,
+        hours=5,
+        seconds=57,
+        miliseconds=8,
+        microseconds=30,
+        nanoseconds=20,
     )
 )
 ```
