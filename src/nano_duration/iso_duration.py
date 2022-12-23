@@ -50,22 +50,10 @@ def parse(duration: str) -> Duration:
     if match:
         group = match.groupdict()
         duration_dict = {
-            "years": split(group.get("years")),
-            "months": split(group.get("months")),
-            "days": split(group.get("days")),
-            "hours": split(group.get("hours")),
-            "minutes": split(group.get("minutes")),
-            "seconds": split(group.get("seconds")),
-            "miliseconds": split(group.get("miliseconds")),
-            "microseconds": split(group.get("microseconds")),
-            "nanoseconds": split(group.get("nanoseconds")),
+            key: int(value[:-1]) if value and value[:-1] else 0
+            for key, value in group.items()
         }
+        duration_dict.pop("separator", None)
     else:
         raise IncorrectPattern()
-    return Duration(duration_dict)
-
-
-def split(string_value) -> int:
-    if string_value is not None:
-        return int(string_value[:-1])
-    return 0
+    return Duration(**duration_dict)
